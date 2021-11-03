@@ -48,6 +48,7 @@ class _BootAnimationState extends State<BootAnimation> {
       author: "author",
       likes: 0,
       shares: 0);
+
   Music music = Music(
       id: 0,
       date: "date",
@@ -57,6 +58,7 @@ class _BootAnimationState extends State<BootAnimation> {
       file: "file",
       likes: 0,
       shares: 0);
+
   Article article = Article(
       id: 0,
       date: "date",
@@ -68,8 +70,8 @@ class _BootAnimationState extends State<BootAnimation> {
       shares: 0);
 
   @override
-  void initState() {
-    dataManager(poetry, music, article);
+  void initState() async {
+    await dataManager(poetry, music, article);
     // TODO: implement initState
     super.initState();
   }
