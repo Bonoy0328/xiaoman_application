@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:xiaoman_application/models/xm_database.dart';
 import 'package:dio/dio.dart';
 
+Future<void> testFuture() async {
+  await Future.delayed(const Duration(seconds: 4));
+}
+
 Future<void> dataManager(Poetry poetry, Music music, Article article) async {
   Dio dio = Dio();
   Response response = await dio.get("https://www.bonoy0328.com/getPoetry");
@@ -9,8 +13,8 @@ Future<void> dataManager(Poetry poetry, Music music, Article article) async {
   poetry.content = response.data["poetryContent"];
   poetry.date = response.data["Date"];
   poetry.id = response.data["ID"];
-  poetry.likes = int.parse(response.data["LikesNum"]);
-  poetry.shares = int.parse(response.data["SharedNum"]);
+  poetry.likes = response.data["LikesNum"];
+  poetry.shares = response.data["SharedNum"];
 
   response = await dio.get("https://www.bonoy0328.com/getMusic");
   music.id = response.data["ID"];
@@ -19,8 +23,8 @@ Future<void> dataManager(Poetry poetry, Music music, Article article) async {
   music.image = response.data["musicImg"];
   music.author = response.data["anthorName"];
   music.name = response.data["musicName"];
-  music.likes = int.parse(response.data["LikesNum"]);
-  music.shares = int.parse(response.data["SharedNum"]);
+  music.likes = response.data["LikesNum"];
+  music.shares = response.data["SharedNum"];
 
   response = await dio.get("https://www.bonoy0328.com/getArticle");
   article.author = response.data["ArticleAnthor"];
@@ -29,8 +33,8 @@ Future<void> dataManager(Poetry poetry, Music music, Article article) async {
   article.id = response.data["ID"];
   article.image = response.data["articleImg"];
   article.title = response.data["articleTitle"];
-  article.likes = int.parse(response.data["LikesNum"]);
-  article.shares = int.parse(response.data["SharedNum"]);
+  article.likes = response.data["LikesNum"];
+  article.shares = response.data["SharedNum"];
 }
 
 class BootAnimation extends StatefulWidget {
@@ -70,9 +74,11 @@ class _BootAnimationState extends State<BootAnimation> {
       shares: 0);
 
   @override
-  void initState() async {
-    await dataManager(poetry, music, article);
-    // TODO: implement initState
+  void initState() {
+    testFuture();
+    dataManager(poetry, music, article).then((_) {
+      print(poetry.content);
+    });
     super.initState();
   }
 
