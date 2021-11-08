@@ -5,7 +5,7 @@ import 'package:xiaoman_application/models/xm_database.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sized_context/sized_context.dart';
-import 'package:xiaoman_application/screens/poetry.dart';
+import 'package:xiaoman_application/screens/home.dart';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -89,7 +89,7 @@ class _BootAnimationState extends State<BootAnimation> {
     _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
       if (initSuccess) {
         timeoutCnt++;
-        print("time cnt : $timeoutCnt");
+        // print("time cnt : $timeoutCnt");
         if (timeoutCnt >= 10) {
           _timer.cancel();
           Navigator.push(context, _createRounte(poetry, music, article));
@@ -106,14 +106,8 @@ class _BootAnimationState extends State<BootAnimation> {
   @override
   void initState() {
     startTimer();
-    // delayInit().then((value) => {
-    //       if (initSuccess)
-    //         {Navigator.push(context, _createRounte(poetry, music, article))}
-    //       else
-    //         {startTimer()}
-    //     });
     dataManager(poetry, music, article).then((_) {
-      print(poetry.content);
+      // print(poetry.content);
       initSuccess = true;
     });
     super.initState();
@@ -193,7 +187,7 @@ class _BootAnimationState extends State<BootAnimation> {
 Route _createRounte(Poetry poetry, Music music, Article article) {
   return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimatino) =>
-          PoetryScreen(poetry: poetry, music: music, article: article),
+          HomePage(poetry: poetry, music: music, article: article),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var curve = Curves.ease;
         var curveTween = CurveTween(curve: curve);
