@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class Poetry {
   int id;
@@ -61,8 +63,21 @@ class Article {
 }
 
 Future<void> dataManager(Poetry poetry, Music music, Article article) async {
+  DateTime dateTime = DateTime.now();
+  var formatter = new DateFormat('yyyy-MM-dd');
+  String formattedDate = formatter.format(dateTime);
+  bool isInitiateRequest = false;
+  // String contentDate = " ";
+  print(formattedDate.substring(0, 10));
   Dio dio = Dio();
-
+  // check local time is match database time
+  // if true don't initiate network request
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  var contentDate = prefs.getString("contentDate");
+  if (contentDate == null) {
+    print("initiate request");
+    isInitiateRequest = true;
+  } else {}
 // Date: "2021-6-2-21:58"
 // ID: 1
 // LikesNum: 2
@@ -77,6 +92,8 @@ Future<void> dataManager(Poetry poetry, Music music, Article article) async {
   poetry.id = response.data["ID"];
   poetry.likes = response.data["LikesNum"];
   poetry.shares = response.data["SharedNum"];
+
+  print(poetry.date.substring(0, 10));
 
 // Date: "2021-6-8-21:21:21"
 // ID: 1
